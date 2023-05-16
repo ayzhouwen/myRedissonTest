@@ -72,8 +72,8 @@ public class MyLockUtil {
         switch (n) {
             case 0:
             case 1:
-                     lock.lock();
-                     break;
+                    lock.lock();
+                break;
             default:
                 throw new RuntimeException(CacheConstants.UnsupportError);
         }
@@ -91,6 +91,7 @@ public class MyLockUtil {
                 try {
                     lock.unlock();
                 } catch (Exception e) {
+                    log.error("释放锁异常:",e);
                 }
                 break;
             default:

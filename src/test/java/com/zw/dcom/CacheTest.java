@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
@@ -53,8 +55,9 @@ public class CacheTest {
     public void  test2(){
         long stime=System.currentTimeMillis();
         Lock lock=myLockUtil.getLock("testLock");
-        int size=1000*10;
-        CountDownLatch c=new CountDownLatch(size);
+        int size=3;
+       CountDownLatch c=new CountDownLatch(size);
+
         for (int i = 0; i <size ; i++) {
             Thread t=new Thread(()->{
                 try {
@@ -63,6 +66,7 @@ public class CacheTest {
                     log.info("当前sum值:"+sum);
 
                 } catch (Exception e) {
+                    log.error("加锁异常:",e);
                     throw new RuntimeException(e);
                 } finally {
                     myLockUtil.unlock(lock);
@@ -72,6 +76,29 @@ public class CacheTest {
             t.start();
 
         }
+
+
+//        ExecutorService exec = Executors.newFixedThreadPool(5000);
+
+//
+//        for (int i = 0; i <size ; i++) {
+//            exec.execute(()->{
+//                try {
+//                    myLockUtil.lock(lock);
+//                    sum++;
+//                    log.info("当前sum值:"+sum);
+//
+//                } catch (Exception e) {
+//                    log.error("加锁异常:",e);
+//                    throw new RuntimeException(e);
+//                } finally {
+//                    myLockUtil.unlock(lock);
+//                    c.countDown();
+//                }
+//            });
+//
+//
+//        }
 
         try {
             c.await();
