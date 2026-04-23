@@ -7,8 +7,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ConditionalOnProperty(prefix = "", name = "demo.cacheType", havingValue = "1")
+/*
+* 单机版redis，如果使用集群，则不需要此配置，并且注释掉，暂时手动配置，有时间改成自动的
+* spring:
+  profiles:
+    active: cluster
+ */
+//@Configuration
+//@ConditionalOnProperty(prefix = "", name = "demo.cacheType", havingValue = "1")
 public class RedissonConfig {
     @Value("${spring.redis.host}")
     private String host;

@@ -32,6 +32,8 @@ logging:
 
 # Spring配置
 spring:
+  profiles:
+    active: cluster
   # redis 配置
   redis:
     # 地址
